@@ -1,0 +1,7 @@
+transformers>=4.44,<5
+tokenizers
+sentencepiece
+protobuf
+pandas
+numpy
+scikit-learn

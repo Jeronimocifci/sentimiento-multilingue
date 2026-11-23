@@ -29,6 +29,9 @@ automática + code-switching sintético + EDA**, K-fold (5) estratificado por et
 └── data/                            # train.csv, eval.csv (ignorados por git)
 ```
 
+## Correr en otro computador (PyTorch, GPU NVIDIA / Mac)
+Ver **[RUN_LOCAL.md](RUN_LOCAL.md)**: clonar, datos, entorno y comandos según la GPU.
+
 ## Cómo correr el modelo final (Kaggle)
 1. Subir `notebooks/02_tpu_solucion_final.ipynb` a Kaggle → *Add Input* → datos de la competencia.
 2. *Settings*: **Accelerator TPU v5e-8**, **Internet On**.
