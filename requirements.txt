@@ -1,0 +1,14 @@
+# CPU local (EDA, baseline, smoke test). En Kaggle TPU el notebook 02 instala lo que falte.
+pandas
+numpy
+scikit-learn
+matplotlib
+jupyter
+nbformat
+# Para el smoke test del notebook 02 en CPU:
+jax[cpu]
+flax
+optax
+transformers>=4.44,<5   # 5.x eliminó Flax
+tokenizers
+sentencepiece

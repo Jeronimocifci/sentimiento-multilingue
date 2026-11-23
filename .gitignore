@@ -1,0 +1,13 @@
+data/
+outputs/
+notebooks/outputs/
+models/
+*.msgpack
+*.safetensors
+*.npy
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.DS_Store
+submissions/*.csv
+!submissions/.gitkeep
