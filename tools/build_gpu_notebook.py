@@ -39,6 +39,20 @@ print(json.dumps(json.load(open('/kaggle/working/run/log.json')), indent=2, defa
 sub = glob.glob('/kaggle/working/run/submission_*.csv')[0]; shutil.copy(sub, '/kaggle/working/submission.csv')
 print('✅ submission.csv lista ←', sub)"""),
 ]
+import copy, sys
+def write(name, modo, seed, extra_md=''):
+    cs = copy.deepcopy(cells)
+    cs[4].source = cs[4].source.replace("MODO = 'large_holdout'", f"MODO = '{modo}'").replace("cmd = f'python train_torch.py", f"SEED = {seed}\ncmd = f'python train_torch.py --seed {{SEED}}")
+    if extra_md: cs.insert(0, nbf.v4.new_markdown_cell(extra_md))
+    nb = nbf.v4.new_notebook(cells=cs)
+    nb.metadata = {"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"},
+                   "kaggle": {"accelerator": "gpu", "isInternetEnabled": True}}
+    nbf.write(nb, ROOT / 'notebooks' / name); print('ok', name)
+write('04_kaggle_gpu_torch.ipynb', 'large_holdout', 42)
+write('05_kaggle_gpu_torch_compa.ipynb', 'large_3folds', 2026, """> **Versión para el compañero de grupo** (cuenta de Kaggle propia → cuota propia de GPU, corre en paralelo).
+> Mismo modelo, **otra semilla (2026) y 3 folds**: su `probs_eval.npy` se ensambla con las demás corridas
+> (`src/ensemble.py`) para reducir varianza. Tiempo aprox.: 3–4 h en P100.""")
+sys.exit(0)
 nb = nbf.v4.new_notebook(cells=cells)
 nb.metadata = {"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"},
                "kaggle": {"accelerator": "gpu", "isInternetEnabled": True}}
