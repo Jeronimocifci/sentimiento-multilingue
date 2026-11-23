@@ -3,6 +3,14 @@
 Competencia Kaggle del curso **Aprendizaje de Máquina 2026-20 (Uniandes)**: dada una reseña (es / en / pt / fr o
 code-switching es-en), predecir `negativo`, `neutral` o `positivo`. Métrica: **accuracy**.
 
+**Integrantes:**
+| Nombre | Código |
+|---|---|
+| Ali Cifci | 202210698 |
+| Daniel Felipe Torres López | 202110365 |
+| Santiago Tenjo Venegas | 202113965 |
+| Johan Alejandro Charry Acevedo | 202111151 |
+
 **Solución:** XLM-RoBERTa large con *fine-tuning* en **TPU v5e-8 (JAX/Flax + `pmap`)**, aumentación por **traducción
 automática + code-switching sintético + EDA**, K-fold (5) estratificado por etiqueta × idioma.
 
