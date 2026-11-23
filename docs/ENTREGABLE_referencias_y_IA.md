@@ -8,7 +8,8 @@
 |---|---|---|---|
 | Clasificador (*fine-tuning*) | XLM-RoBERTa large | https://huggingface.co/FacebookAI/xlm-roberta-large · Conneau et al. (2020), *Unsupervised Cross-lingual Representation Learning at Scale*, ACL | MIT |
 | Traducción es→en (datos sintéticos) | MarianMT opus-mt-es-en | https://huggingface.co/Helsinki-NLP/opus-mt-es-en · Tiedemann & Thottingal (2020), *OPUS-MT*, EAMT | Apache-2.0 |
-| Traducción en→fr / en→pt (datos sintéticos) | MarianMT opus-mt-en-ROMANCE | https://huggingface.co/Helsinki-NLP/opus-mt-en-ROMANCE | Ver tarjeta del modelo (OPUS-MT) — **verificar antes de entregar** |
+| Traducción fr/pt→en (v2) | MarianMT opus-mt-ROMANCE-en | https://huggingface.co/Helsinki-NLP/opus-mt-ROMANCE-en | Ver tarjeta del modelo (OPUS-MT) — **verificar** |
+| Traducción en→fr / en→pt / en→es (datos sintéticos) | MarianMT opus-mt-en-ROMANCE | https://huggingface.co/Helsinki-NLP/opus-mt-en-ROMANCE | Ver tarjeta del modelo (OPUS-MT) — **verificar antes de entregar** |
 
 Librerías: JAX, Flax, Optax (Apache-2.0), Hugging Face Transformers (Apache-2.0), scikit-learn (BSD-3).
 
@@ -23,6 +24,11 @@ Librerías: JAX, Flax, Optax (Apache-2.0), Hugging Face Transformers (Apache-2.0
      inglés con p = 0.5, garantizando al menos una de cada idioma. 3 000 reseñas.
   3. **EDA:** al 30 % de las reseñas de train se les borra cada palabra con p = 0.1 y se intercambia un par de palabras
      adyacentes, **sin tocar negaciones ni conectores de contraste**.
+- **v2 (notebook 03):** 8 000 reseñas en español (es→en→fr/pt), **todas** las reseñas en inglés (→fr, pt, es) y
+  **todas** las en francés/portugués (→en); 4 000 code-switching. Cada época usa todos los originales + una muestra
+  aleatoria distinta de aumentos (1.5× el número de originales).
+- **Modelo clásico auxiliar (stacking):** TF-IDF posicional + regresión logística, combinado con el transformer por
+  una regresión logística sobre probabilidades OOF. El modelo de deep learning es el componente principal.
 - **Sin fuga:** cada aumento guarda `src_id`; en cada fold solo se usan aumentos de reseñas del fold de entrenamiento.
 - **Efecto medido:** ablación en el fold 0 (sin aug / traducción + code-switching / todo), sección 4 del notebook
   (`ablacion_aumentacion.csv`).

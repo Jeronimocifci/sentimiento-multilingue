@@ -12,13 +12,17 @@ automática + code-switching sintético + EDA**, K-fold (5) estratificado por et
 ├── notebooks/
 │   ├── 00_eda.ipynb                 # CPU · cambio de distribución de idiomas train→eval (ejecutado)
 │   ├── 01_baseline_tfidf.ipynb      # CPU · línea base no-DL: 0.717 CV (ejecutado)
-│   └── 02_tpu_solucion_final.ipynb  # TPU · ENTREGABLE: modelo final, ablación con/sin aug, análisis por idioma
+│   ├── 02_tpu_solucion_final.ipynb  # TPU · v1: XLM-R large + aumentación, ablación A/B/C, análisis por idioma
+│   └── 03_tpu_v2_max_accuracy.ipynb # TPU · v2 (máximo accuracy): entrada en par, traducción multi-dirección,
+│                                    #       LLRD, muestreo dinámico de aug, stacking OOF, presupuesto de tiempo
 ├── src/
 │   ├── lang_detect.py               # detector de idioma por stopwords (+ code-switching)
 │   ├── augment.py                   # traducción por oraciones, code-switching, EDA
-│   └── ensemble.py                  # promedia probs de varias corridas → submission
+│   ├── ensemble.py                  # promedia probs de varias corridas → submission
+│   └── tfidf_posicional.py          # clásico posicional (CV 0.798): envío de referencia y stacking
 ├── tools/
 │   ├── build_main_notebook.py       # genera el notebook 02 (versionable y reproducible)
+│   ├── build_v2_notebook.py         # genera el notebook 03 (v2) a partir del 02
 │   └── build_cpu_notebooks.py       # genera los notebooks 00 y 01
 ├── docs/ENTREGABLE_referencias_y_IA.md   # entregable 3: modelos, datos, licencias, uso de IA
 ├── submissions/                     # CSVs enviados (ignorados por git)
@@ -34,6 +38,16 @@ automática + code-switching sintético + EDA**, K-fold (5) estratificado por et
 
 **Para re-correr más rápido** (p. ej. otra semilla): añade el Output de la primera corrida como Input; el notebook
 reutiliza `train_aug.csv` y se salta la traducción.
+
+## Hallazgo clave de EDA: el veredicto está al final
+| Qué ve el TF-IDF | CV |
+|---|---|
+| Primeras 2 oraciones | 0.568 |
+| Reseña completa | 0.699 |
+| Solo la última oración | 0.758 |
+| Completa + última + penúltima + primera | **0.798** |
+
+Por eso la v2 alimenta el transformer con el par `(últimas 2 oraciones, reseña completa)`.
 
 ## Optimizaciones TPU (lecciones del proyecto anterior)
 | Problema en el proyecto 1 | Solución aquí |
@@ -58,6 +72,8 @@ cd notebooks && SMOKE=1 XLA_FLAGS=--xla_force_host_platform_device_count=8 \
 | # | Envío | CV | Público | Notas |
 |---|---|---|---|---|
 | 1 | TF-IDF + LogReg (no-DL, referencia) | 0.717 | | |
+| 1b | TF-IDF posicional (`src/tfidf_posicional.py`) | 0.798 | | |
+| 2b | **v2** (notebook 03) `submission.csv` / `submission_transformer.csv` | | | |
 | 2 | XLM-R large, K-fold, mejor config de la ablación | | | |
 | 3 | `submission` de una sola config (A/B/C) para comparar | | | |
 | 4 | 2.ª semilla del notebook 02 | | | |
