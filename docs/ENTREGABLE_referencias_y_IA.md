@@ -15,6 +15,18 @@
 
 ---
 
+## 0. Modelo final entregado
+
+**Ensemble de 3 modelos XLM-RoBERTa large** ajustados por el grupo (promedio de probabilidades). Score público en Kaggle: **0.89833**.
+
+| Componente | Entrenamiento | Kaggle público |
+|---|---|---|
+| XLM-R large, semilla 7 | Colab T4, holdout 8 %, sin aumentación | 0.89980 |
+| XLM-R large, semilla 7 **con aumentación por traducción** | Colab T4, misma partición | 0.89587 |
+| XLM-R large, semilla 2026, 3 folds | Kaggle GPU P100 | 0.89833 |
+
+Pesos guardados con PyTorch / Transformers (`save_pretrained` → `model.safetensors` + tokenizer). Enlace a los pesos: *(pendiente: carpeta compartida de Google Drive)*.
+
 ## 1. Modelos preentrenados utilizados
 
 | Uso en el proyecto | Modelo | Fuente (enlace) | Licencia |
